@@ -1,0 +1,118 @@
+
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Create Account</title>
+  <style>
+    /* Background */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: #f5f7fb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Card container */
+.container {
+    background: white;
+    padding: 35px;
+    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Heading */
+h1 {
+    font-size: 2rem;
+    color: #1d2671;
+    margin-bottom: 5px;
+}
+
+/* Form inputs */
+form label {
+    font-weight: 600;
+    text-align: left;
+    display: block;
+    margin-top: 5px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form select,
+form input[type="file"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    outline: none;
+}
+
+form input:focus,
+form select:focus {
+    border-color: #1d2671;
+    box-shadow: 0 0 3px rgba(29, 38, 113, 0.4);
+}
+
+/* Button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #1d2671;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    background: #c33764;
+}
+
+/* Back button */
+.back-btn {
+    display: block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #1d2671;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    color: #c33764;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Create Account</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-box">
+            {{ form.as_p }}
+
+            <label for="photo">Photo :</label>
+            <input type="file" name="photo"><br>
+        </div>
+
+        <button type="submit" class="btn">Create</button>
+    </form>
+
+    <a href="/dashboard/" class="back-btn">Back</a>
+</div>
+</body>
+</html>

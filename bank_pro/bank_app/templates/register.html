@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SFC Bank | Register</title>
+
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+    font-family: Poppins, sans-serif;
+    background: linear-gradient(135deg, #81c7f9, #377fc3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.box {
+    width: 350px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 7px 20px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+h2 {
+    color: #1a4fa3;
+    margin-bottom: 20px;
+}
+
+.role {
+    margin-bottom: 15px;
+}
+
+.role label {
+    margin-right: 15px;
+}
+
+input {
+    width: 92%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    background: #1a4fa3;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #003f91;
+}
+
+a { color: #003f91; }
+
+.error { color: red; }
+.success { color: green; }
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2><i class="fa-solid fa-user-plus"></i> Register</h2>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+        <p class="success">{{ success }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="name" placeholder="Full Name">
+        <input type="email" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Password">
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p><br>Already registered? <a href="/login/">Login</a></p>
+</div>
+
+</body>
+</html>
