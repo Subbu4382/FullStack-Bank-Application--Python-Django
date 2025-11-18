@@ -17,7 +17,6 @@ env = environ.Env()
 environ.Env.read_env()
 from django.core.mail import EmailMessage
 
-# from .forms import CreateAccountForm, TransactionForm
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -31,38 +30,37 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("dashboard")
 
     def form_valid(self, form):
-        # Step 1: Save account
+        # Save account
         account = form.save()
-
-        # Step 2: Upload photo
+        # Upload photo
         uploaded_photo = self.request.FILES.get("photo")
         if uploaded_photo:
             result = cloudinary.uploader.upload(uploaded_photo)
             account.photo = result["secure_url"]
 
-        # Step 3: Save updated model
+        # Save updated model
         account.save()
 
-        # Step 4: Send email
-        # try:
-        #     if account.email:
-        #         email = EmailMessage(
-        #             subject="SFC Bank",
-        #             body=(
-        #                 f"Dear {account.name},\n\n"
-        #                 f"Your new SFC Bank account has been successfully created.\n"
-        #                 f"Account Number: {account.account_number}\n"
-        #                 f"Thank you for choosing SFC Bank."
-        #             ),
-        #             from_email=settings.DEFAULT_FROM_EMAIL,
-        #             to=[account.email],
-        #         )
-        #         email.send()
-        #         print("mail sent sucessfully")
-        # except Exception as e:
-        #     print("EMAIL ERROR:", str(e))   # show error in terminal
+        # Send email
+        try:
+            if account.email:
+                email = EmailMessage(
+                    subject="SFC Bank",
+                    body=(
+                        f"Dear {account.name},\n\n"
+                        f"Your new SFC Bank account has been successfully created.\n"
+                        f"Account Number: {account.account_number}\n"
+                        f"Thank you for choosing SFC Bank."
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[account.email],
+                )
+                email.send()
+                print("mail sent sucessfully")
+        except Exception as e:
+            print("EMAIL ERROR:", str(e))   # show error in terminal
 
-        # Step 5: Render success page
+        # Render success page
         return render(
             self.request,
             "success.html",
@@ -128,25 +126,25 @@ class DepositView(LoginRequiredMixin, View):
 
         if serializer.is_valid():
             serializer.save()
-            # if user.email:
-            #     email = EmailMessage(
-            #         subject="SFC Bank",
-            #         body=(
-            #             f"Dear {user.name},\n\n"
-            #             f"We are pleased to inform you that an amount of ₹{amount} has been "
-            #             f"successfully credited to your account.\n\n"
-            #             f"Account Number : XXXXXX{user.account_number[-4:]}\n"
-            #             f"Current Balance : ₹{new_balance}\n\n"
-            #             f"If you have not initiated this transaction, please contact your branch immediately.\n\n"
-            #             f"Regards,\n"
-            #             f"SFC Bank"
-            #         ),
-            #         from_email="subrahmanyamdunne02@gmail.com",
-            #         to=[user.email],
-            #     )
+            if user.email:
+                email = EmailMessage(
+                    subject="SFC Bank",
+                    body=(
+                        f"Dear {user.name},\n\n"
+                        f"We are pleased to inform you that an amount of ₹{amount} has been "
+                        f"successfully credited to your account.\n\n"
+                        f"Account Number : XXXXXX{user.account_number[-4:]}\n"
+                        f"Current Balance : ₹{new_balance}\n\n"
+                        f"If you have not initiated this transaction, please contact your branch immediately.\n\n"
+                        f"Regards,\n"
+                        f"SFC Bank"
+                    ),
+                    from_email="subrahmanyamdunne02@gmail.com",
+                    to=[user.email],
+                )
            
-            # email.send()
-            # print("email send sucessfully")
+            email.send()
+            print("email send sucessfully")
             return render(
                 request,
                 "success.html",
@@ -223,27 +221,27 @@ class Withdraw(LoginRequiredMixin, View):
 
         if serializer.is_valid():
             serializer.save()
-            # if user.email:
-            #     email = EmailMessage(
-            #         subject="SFC Bank",
-            #         body=(
-            #             f"Dear {user.name},\n\n"
-            #             f"An amount of ₹{amount} has been debited from your account "
-            #             f"on {datetime.date.today().strftime('%d-%m-%Y')} at "
-            #             f"{datetime.datetime.now().strftime('%I:%M %p')}.\n\n"
-            #             f"Account Number : XXXXXXXX{user.account_number[-4:]}\n"
-            #             f"Available Balance : ₹{new_balance}\n\n"
-            #             "If this transaction was not initiated by you, "
-            #             "please contact SFC Bank customer support immediately.\n\n"
-            #             "Thank you for banking with us.\n"
-            #             "SFC Bank"
-            #         ),
-            #         from_email="subrahmanyamdunne02@gmail.com",
-            #         to=[user.email],
-            #     )
+            if user.email:
+                email = EmailMessage(
+                    subject="SFC Bank",
+                    body=(
+                        f"Dear {user.name},\n\n"
+                        f"An amount of ₹{amount} has been debited from your account "
+                        f"on {datetime.date.today().strftime('%d-%m-%Y')} at "
+                        f"{datetime.datetime.now().strftime('%I:%M %p')}.\n\n"
+                        f"Account Number : XXXXXXXX{user.account_number[-4:]}\n"
+                        f"Available Balance : ₹{new_balance}\n\n"
+                        "If this transaction was not initiated by you, "
+                        "please contact SFC Bank customer support immediately.\n\n"
+                        "Thank you for banking with us.\n"
+                        "SFC Bank"
+                    ),
+                    from_email="subrahmanyamdunne02@gmail.com",
+                    to=[user.email],
+                )
            
-            # email.send()
-            # print("email send sucessfully")
+            email.send()
+            print("email send sucessfully")
             message = (
                 f"Dear {user.name}, an amount of ₹{amount} has been debited from your Account"
             )
@@ -334,13 +332,13 @@ def login(request):
         password = request.POST.get("password")
 
         # -----------------------------
-        # 1️⃣ ADMIN LOGIN (Fixed credentials)
+        # ADMIN LOGIN (Fixed credentials)
         # -----------------------------
         if login_type == "admin":
             try:
               if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
 
-                payload = {"email": email, "role": "admin", "is_admin": True,"exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}
+                payload = {"email": email, "role": "admin", "is_admin": True,"exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}
                 token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
                 response = redirect("dashboard")
@@ -352,9 +350,8 @@ def login(request):
                 )
             except Exception as e:
                 return render(request,"login.html", {"error": str(e)})
-        # ------------------------------------
-        # 2️⃣ USER LOGIN (Check in database)
-        # ------------------------------------
+      
+        # USER LOGIN (Check in database)
         if login_type == "user":
             try:
                 user = User.objects.get(email=email)
