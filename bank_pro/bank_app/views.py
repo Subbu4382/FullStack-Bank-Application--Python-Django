@@ -84,23 +84,23 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
 
         account.save()
 
-        try:
-            if account.email:
-                email = EmailMessage(
-                    subject="SFC Bank",
-                    body=(
-                        f"Dear {account.name},\n\n"
-                        f"Your new SFC Bank account has been successfully created.\n"
-                        f"Account Number: {account.account_number}\n"
-                        f"Thank you for choosing SFC Bank."
-                    ),
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    to=[account.email],
-                )
-                email.send(fail_silently=True)
-                print("mail sent sucessfully")
-        except Exception as e:
-            print("EMAIL ERROR:", str(e)) 
+        # try:
+        #     if account.email:
+        #         email = EmailMessage(
+        #             subject="SFC Bank",
+        #             body=(
+        #                 f"Dear {account.name},\n\n"
+        #                 f"Your new SFC Bank account has been successfully created.\n"
+        #                 f"Account Number: {account.account_number}\n"
+        #                 f"Thank you for choosing SFC Bank."
+        #             ),
+        #             from_email=settings.DEFAULT_FROM_EMAIL,
+        #             to=[account.email],
+        #         )
+        #         email.send(fail_silently=True)
+        #         print("mail sent sucessfully")
+        # except Exception as e:
+        #     print("EMAIL ERROR:", str(e)) 
 
         return render(
             self.request,
@@ -166,25 +166,25 @@ class DepositView(LoginRequiredMixin, View):
 
         if serializer.is_valid():
             serializer.save()
-            if user.email:
-                email = EmailMessage(
-                    subject="SFC Bank",
-                    body=(
-                        f"Dear {user.name},\n\n"
-                        f"We are pleased to inform you that an amount of ₹{amount} has been "
-                        f"successfully credited to your account.\n\n"
-                        f"Account Number : XXXXXX{user.account_number[-4:]}\n"
-                        f"Current Balance : ₹{new_balance}\n\n"
-                        f"If you have not initiated this transaction, please contact your branch immediately.\n\n"
-                        f"Regards,\n"
-                        f"SFC Bank"
-                    ),
-                    from_email="subrahmanyamdunne02@gmail.com",
-                    to=[user.email],
-                )
+            # if user.email:
+            #     email = EmailMessage(
+            #         subject="SFC Bank",
+            #         body=(
+            #             f"Dear {user.name},\n\n"
+            #             f"We are pleased to inform you that an amount of ₹{amount} has been "
+            #             f"successfully credited to your account.\n\n"
+            #             f"Account Number : XXXXXX{user.account_number[-4:]}\n"
+            #             f"Current Balance : ₹{new_balance}\n\n"
+            #             f"If you have not initiated this transaction, please contact your branch immediately.\n\n"
+            #             f"Regards,\n"
+            #             f"SFC Bank"
+            #         ),
+            #         from_email="subrahmanyamdunne02@gmail.com",
+            #         to=[user.email],
+            #     )
            
-            email.send()
-            print("email send sucessfully")
+            # email.send()
+            # print("email send sucessfully")
             return render(
                 request,
                 "success.html",
@@ -261,27 +261,27 @@ class Withdraw(LoginRequiredMixin, View):
 
         if serializer.is_valid():
             serializer.save()
-            if user.email:
-                email = EmailMessage(
-                    subject="SFC Bank",
-                    body=(
-                        f"Dear {user.name},\n\n"
-                        f"An amount of ₹{amount} has been debited from your account "
-                        f"on {datetime.date.today().strftime('%d-%m-%Y')} at "
-                        f"{datetime.datetime.now().strftime('%I:%M %p')}.\n\n"
-                        f"Account Number : XXXXXXXX{user.account_number[-4:]}\n"
-                        f"Available Balance : ₹{new_balance}\n\n"
-                        "If this transaction was not initiated by you, "
-                        "please contact SFC Bank customer support immediately.\n\n"
-                        "Thank you for banking with us.\n"
-                        "SFC Bank"
-                    ),
-                    from_email="subrahmanyamdunne02@gmail.com",
-                    to=[user.email],
-                )
+            # if user.email:
+            #     email = EmailMessage(
+            #         subject="SFC Bank",
+            #         body=(
+            #             f"Dear {user.name},\n\n"
+            #             f"An amount of ₹{amount} has been debited from your account "
+            #             f"on {datetime.date.today().strftime('%d-%m-%Y')} at "
+            #             f"{datetime.datetime.now().strftime('%I:%M %p')}.\n\n"
+            #             f"Account Number : XXXXXXXX{user.account_number[-4:]}\n"
+            #             f"Available Balance : ₹{new_balance}\n\n"
+            #             "If this transaction was not initiated by you, "
+            #             "please contact SFC Bank customer support immediately.\n\n"
+            #             "Thank you for banking with us.\n"
+            #             "SFC Bank"
+            #         ),
+            #         from_email="subrahmanyamdunne02@gmail.com",
+            #         to=[user.email],
+            #     )
            
-            email.send()
-            print("email send sucessfully")
+            # email.send()
+            # print("email send sucessfully")
             message = (
                 f"Dear {user.name}, an amount of ₹{amount} has been debited from your Account"
             )
