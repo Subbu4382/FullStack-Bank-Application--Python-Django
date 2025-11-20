@@ -19,9 +19,54 @@ from django.core.mail import EmailMessage
 
 
 
+
+class AllCustomersView(AdminRequiredMixin,View):
+    def get(self,req):
+       AllCustomers=Account.objects.all()
+       return render(req,"AllCustomers.html",{"AllCustomers":AllCustomers})
+
+class AdminUsersListView(AdminRequiredMixin, TemplateView):
+    template_name = "Register_user_list.html"
+
+    def get(self, request):
+        users = User.objects.all()
+        return render(request, self.template_name, {"users": users})
+
+
+class PromoteAdminView(AdminRequiredMixin,View):
+    def get(self,request, user_id):
+       user = User.objects.get(id=user_id)
+       user.role = "admin"
+       user.save()
+
+       return redirect("Registered_users")
+
+    
+class AdminDeleteUserView(AdminRequiredMixin, View):
+
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            # prevent deleting admins
+            if user.role == "admin":
+                return render(request, "error.html", {
+                "message": "Admin accounts cannot be deleted."
+            })
+
+            user.delete()
+            return redirect("Registered_users")
+
+        except Exception as e:
+         return render(request, "login.html", {"error": str(e)})
+    
+
+
+
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
 
+class AdminDashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "Admin_dashboard.html"
 
 class CreateAccountView(LoginRequiredMixin, CreateView):
     model = Account
@@ -30,7 +75,6 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("dashboard")
 
     def form_valid(self, form):
-        # Save account
         account = form.save()
         # Upload photo
         uploaded_photo = self.request.FILES.get("photo")
@@ -38,10 +82,8 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
             result = cloudinary.uploader.upload(uploaded_photo)
             account.photo = result["secure_url"]
 
-        # Save updated model
         account.save()
 
-        # Send email
         try:
             if account.email:
                 email = EmailMessage(
@@ -58,9 +100,8 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
                 email.send()
                 print("mail sent sucessfully")
         except Exception as e:
-            print("EMAIL ERROR:", str(e))   # show error in terminal
+            print("EMAIL ERROR:", str(e)) 
 
-        # Render success page
         return render(
             self.request,
             "success.html",
@@ -85,7 +126,6 @@ class DepositView(LoginRequiredMixin, View):
         branch = request.POST.get("branch")
         amount = request.POST.get("amount")
 
-        # Validate amount
         try:
             amount = float(amount)
             if amount <= 0:
@@ -93,7 +133,7 @@ class DepositView(LoginRequiredMixin, View):
         except:
             return render(request, self.template_name, {"error": "Invalid Amount"})
 
-        # Fetch account from DB
+    
         try:
             user = Account.objects.get(account_number=acc_no)
         except Account.DoesNotExist:
@@ -322,51 +362,77 @@ def register(request):
 
 ADMIN_EMAIL = env("ADMIN_EMAIL")
 ADMIN_PASSWORD = env("ADMIN_PASSWORD")
-
-
 def login(request):
     if request.method == "POST":
 
-        login_type = request.POST.get("login_type")  # "admin" or "user"
+        login_type = request.POST.get("login_type")
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        # -----------------------------
-        # ADMIN LOGIN (Fixed credentials)
-        # -----------------------------
+        # ======================================================
+        #                 ADMIN LOGIN
+        # ======================================================
         if login_type == "admin":
-            try:
-              if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
 
-                payload = {"email": email, "role": "admin", "is_admin": True,"exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}
+            # 1️⃣ First check FIXED ADMIN credentials
+            if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
+                payload = {
+                    "email": email,
+                    "role": "admin",
+                    "is_admin": True,
+                    "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+                }
                 token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-
-                response = redirect("dashboard")
+                response = redirect("Admin_dashboard")
                 response.set_cookie("token", token, httponly=True)
                 return response
-              else:
-                return render(
-                    request, "login.html", {"message": "Invalid Admin Credentials"}
-                )
-            except Exception as e:
-                return render(request,"login.html", {"error": str(e)})
-      
-        # USER LOGIN (Check in database)
-        if login_type == "user":
+
+            # 2️⃣ If not fixed admin → Check admin in User Database
             try:
-                user = User.objects.get(email=email)
+                user = User.objects.get(email=email, role="admin")
             except User.DoesNotExist:
-                return render(request, "login.html", {"message": "User not found"})
+                return render(request, "login.html", {"message": "Admin account not found"})
 
             # Check password
             if not check_password(password, user.password):
-                return render(request, "login.html", {"message": "Invalid password"})
+                return render(request, "login.html", {"message": "Invalid admin password"})
 
+            # Create token
+            payload = {
+                "email": user.email,
+                "name": user.name,
+                "role": "admin",
+                "is_admin": True,
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            }
+
+            token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+            response = redirect("Admin_dashboard")
+            response.set_cookie("token", token, httponly=True)
+            return response
+
+        # ======================================================
+        #                 USER LOGIN
+        # ======================================================
+        if login_type == "user":
+
+            try:
+                user = User.objects.get(email=email, role="user")
+            except User.DoesNotExist:
+                return render(request, "login.html", {"message": "User account not found"})
+
+            # Check password
+            if not check_password(password, user.password):
+                return render(request, "login.html", {"message": "Invalid user password"})
+
+            # Create token
             payload = {
                 "email": user.email,
                 "name": user.name,
                 "role": "user",
                 "is_admin": False,
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
             }
 
             token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
@@ -375,4 +441,5 @@ def login(request):
             response.set_cookie("token", token, httponly=True)
             return response
 
+    # GET request → show login page
     return render(request, "login.html")

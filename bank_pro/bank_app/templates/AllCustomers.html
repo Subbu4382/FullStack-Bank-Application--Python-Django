@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebrities Data</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 900px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #1d2671;
+            color: white;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background-color: #d9defa;
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1d2671;
+        }
+
+        @media (max-width: 480px) {
+            table {
+                width: 100%;
+            }
+
+            th,
+            td {
+                padding: 6px;
+                font-size: 11px;
+            }
+
+            img {
+                width: 35px;
+                height: 35px;
+            }
+
+            /* Hide less-important columns to save space */
+            td:nth-child(3),
+            /* Profession */
+            th:nth-child(3),
+            td:nth-child(7),
+            /* Followers */
+            th:nth-child(7),
+            td:nth-child(8),
+            /* Nationality */
+            th:nth-child(8) {
+                display: none;
+            }
+        }
+        a {
+      text-decoration: none;
+      color: #190b77;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>All Customers</h2>
+        <table>
+            <thead>
+                <tr>
+                    <!-- <th>ID</th> -->
+                    <th>Profile</th>
+                    <th>Name</th>
+                    <th>Account_number</th>
+                    <th>phone</th>
+                    <th>email</th>
+                    <th>account_type</th>
+                    <th>balance</th>
+                    <th>ifsc_code</th>
+                    <th>branch_name</th>
+                    <th>created_at</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cus in AllCustomers %}
+                <tr>
+                    <!-- <td>{{ celeb.id }}</td> -->
+                    <td>
+                        {% if cus.photo %}
+                        <img src="{{ cus.photo }}" alt="Profile">
+                        {% else %}
+                        <span>No Image</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ cus.name }}</td>
+                    <td>{{ cus.account_number }}</td>
+                    <td>{{ cus.phone }}</td>
+                    <td>{{ cus.email }}</td>
+                    <td>{{ cus.account_type }}</td>
+                    <td>{{ cus.balance }}</td>
+                    <td>{{ cus.ifsc_code }}</td>
+                    <td>{{ cus.branch_name }}</td>
+                     <td>{{ cus.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+         <a href="/Admin_dashboard/">Back To Dashboard</a>
+    </div>
+</body>
+
+</html>
