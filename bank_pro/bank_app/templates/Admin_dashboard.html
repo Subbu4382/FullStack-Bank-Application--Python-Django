@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>SFC Bank Dashboard</title>
@@ -8,138 +9,190 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-       /* Page Background */
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #a9d6f6, #6eb7ed); /* Softer blue gradient */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
+        /* Page Background */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #a9d6f6, #6eb7ed);
+            /* Softer blue gradient */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
 
 
 
-@keyframes float {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-30px); }
-}
+        @keyframes float {
+            from {
+                transform: translateY(0px);
+            }
 
-/* Dashboard Card - Modified to resemble the translucent screen in the image */
-.box {
-    width: 900px; /* Wider to accommodate icon row */
-    padding: 40px 50px;
-    background: rgb(224, 241, 248); /* Slightly less transparent */
-    border-radius: 25px; /* More rounded corners */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Slightly stronger shadow */
-    text-align: center;
-    animation: scaleIn 0.8s ease;
-    z-index: 10;
-    border: 1px solid rgba(255, 255, 255, 0.4); /* Slightly more visible white border */
-    color: white; /* Default text color to white for contrast */
-}
+            to {
+                transform: translateY(-30px);
+            }
+        }
 
-@keyframes scaleIn {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
+        /* Dashboard Card - Modified to resemble the translucent screen in the image */
+        .box {
+            width: 900px;
+            /* Wider to accommodate icon row */
+            padding: 40px 50px;
+            background: rgb(224, 241, 248);
+            /* Slightly less transparent */
+            border-radius: 25px;
+            /* More rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            /* Slightly stronger shadow */
+            text-align: center;
+            animation: scaleIn 0.8s ease;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            /* Slightly more visible white border */
+            color: white;
+            /* Default text color to white for contrast */
+        }
 
-/* Title Branding */
-h1 {
-    margin: 0 0 35px; /* More space below title */
-    color: rgb(31, 96, 133); /* White title for glass effect */
-    font-size: 2.5rem; /* Larger title */
-    letter-spacing: 1.5px;
-    font-weight: 700;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Slightly stronger text shadow */
-}
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
 
-/* Navigation Grid */
-nav {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid of buttons */
-    gap: 25px; /* Space between buttons */
-    margin-top: 30px;
-}
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-nav a {
-    display: flex;
-    flex-direction: column; /* Icon on top, text below */
-    align-items: center;
-    justify-content: center;
-    background: rgba(8, 182, 251, 0.2); /* Slightly more visible background for buttons */
-    color: rgb(6, 74, 103); /* Ensure text is white for strong contrast */
-    text-decoration: none;
-    padding: 20px 10px; /* More padding */
-    border-radius: 15px; /* Rounded buttons */
-    font-size: 0.95rem; /* Slightly smaller text for fit */
-    font-weight: 500;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Slightly stronger button shadow */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Slightly more visible white border for buttons */
-    height: 100px; /* Fixed height for consistent button size */
-    text-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Add text shadow to button text for clarity */
-}
+        /* Title Branding */
+        h1 {
+            margin: 0 0 35px;
+            /* More space below title */
+            color: rgb(31, 96, 133);
+            /* White title for glass effect */
+            font-size: 2.5rem;
+            /* Larger title */
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            /* Slightly stronger text shadow */
+        }
 
-nav a i {
-    font-size: 2.5rem; /* Larger icons */
-    margin-bottom: 10px; /* Space between icon and text */
-    color: #0e7bc3; /* A very light, almost white blue for icons to stand out */
-    text-shadow: 0 2px 4px rgba(30, 20, 225, 0.3); /* Add shadow to icons for better definition */
-}
+        /* Navigation Grid */
+        nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            /* Responsive grid of buttons */
+            gap: 25px;
+            /* Space between buttons */
+            margin-top: 30px;
+        }
 
-nav a:hover {
-    background: rgba(4, 86, 127, 0.5); /* More visible on hover */
-    transform: translateY(-8px); /* More pronounced lift */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* Stronger shadow on hover */
-    border-color: rgba(255, 255, 255, 0.6);
-}
+        nav a {
+            display: flex;
+            flex-direction: column;
+            /* Icon on top, text below */
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 182, 251, 0.2);
+            /* Slightly more visible background for buttons */
+            color: rgb(6, 74, 103);
+            /* Ensure text is white for strong contrast */
+            text-decoration: none;
+            padding: 20px 10px;
+            /* More padding */
+            border-radius: 15px;
+            /* Rounded buttons */
+            font-size: 0.95rem;
+            /* Slightly smaller text for fit */
+            font-weight: 500;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            /* Slightly stronger button shadow */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Slightly more visible white border for buttons */
+            height: 100px;
+            /* Fixed height for consistent button size */
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            /* Add text shadow to button text for clarity */
+        }
 
-/* Responsive */
-@media(max-width: 768px){
-    .box {
-        width: 90%;
-        padding: 30px;
-    }
-    nav {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust grid for smaller screens */
-    }
-}
+        nav a i {
+            font-size: 2.5rem;
+            /* Larger icons */
+            margin-bottom: 10px;
+            /* Space between icon and text */
+            color: #0e7bc3;
+            /* A very light, almost white blue for icons to stand out */
+            text-shadow: 0 2px 4px rgba(30, 20, 225, 0.3);
+            /* Add shadow to icons for better definition */
+        }
 
-@media(max-width: 480px){
-    .box {
-        padding: 25px;
-    }
-    h1 {
-        font-size: 2rem;
-    }
-    nav {
-        grid-template-columns: 1fr; /* Single column for very small screens */
-    }
-    nav a {
-        height: auto; /* Auto height for single column buttons */
-        padding: 15px 10px;
-    }
-    nav a i {
-        font-size: 2rem;
-    }
-}
+        nav a:hover {
+            background: rgba(4, 86, 127, 0.5);
+            /* More visible on hover */
+            transform: translateY(-8px);
+            /* More pronounced lift */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            /* Stronger shadow on hover */
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media(max-width: 768px) {
+            .box {
+                width: 90%;
+                padding: 30px;
+            }
+
+            nav {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                /* Adjust grid for smaller screens */
+            }
+        }
+
+        @media(max-width: 480px) {
+            .box {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            nav {
+                grid-template-columns: 1fr;
+                /* Single column for very small screens */
+            }
+
+            nav a {
+                height: auto;
+                /* Auto height for single column buttons */
+                padding: 15px 10px;
+            }
+
+            nav a i {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <!-- Main Dashboard UI -->
+     <h1>Admin Dashboard</h1>
     <div class="box">
         <h1><i class="fa-solid fa-building-columns"></i> SFC Bank</h1>
 
         <nav>
-            <a href="/AllCustomers/"><i class="fa-solid fa-user-plus"></i>All Customers</a>
-             <a href="/Registered_users/"><i class="fa-solid fa-user-plus"></i>All Users</a>
+            <a href="/AllCustomers/"><i class="fa-solid fa-users"></i> All Customers</a>
+            <a href="/Registered_users/"><i class="fa-solid fa-user-gear"></i> All Users</a>
             <a href="/create/"><i class="fa-solid fa-user-plus"></i> Create Account</a>
             <a href="/deposit/"><i class="fa-solid fa-circle-plus"></i> Deposit Money</a>
             <a href="/withdraw/"><i class="fa-solid fa-circle-minus"></i> Withdraw Money</a>
@@ -149,4 +202,5 @@ nav a:hover {
     </div>
 
 </body>
+
 </html>

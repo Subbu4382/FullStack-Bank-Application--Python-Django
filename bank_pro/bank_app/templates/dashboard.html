@@ -16,6 +16,7 @@ body {
     font-family: "Poppins", sans-serif;
     background: linear-gradient(135deg, #a9d6f6, #6eb7ed); /* Softer blue gradient */
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
@@ -61,7 +62,7 @@ h1 {
 /* Navigation Grid */
 nav {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid of buttons */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid of buttons */
     gap: 25px; /* Space between buttons */
     margin-top: 30px;
 }
@@ -134,6 +135,7 @@ nav a:hover {
 <body>
 
     <!-- Main Dashboard UI -->
+     <h1>Customer Dashboard</h1>
     <div class="box">
         <h1><i class="fa-solid fa-building-columns"></i> SFC Bank</h1>
 
@@ -142,7 +144,7 @@ nav a:hover {
             <a href="/deposit/"><i class="fa-solid fa-circle-plus"></i> Deposit Money</a>
             <a href="/withdraw/"><i class="fa-solid fa-circle-minus"></i> Withdraw Money</a>
             <a href="/balance/"><i class="fa-solid fa-wallet"></i> Check Balance</a>
-            <a href="/delete/"><i class="fa-solid fa-trash"></i> Delete Account</a>
+            <!-- <a href="/delete/"><i class="fa-solid fa-trash"></i> Delete Account</a> -->
         </nav>
     </div>
 

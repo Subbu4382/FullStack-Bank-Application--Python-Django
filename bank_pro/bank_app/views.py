@@ -49,8 +49,8 @@ class AdminDeleteUserView(AdminRequiredMixin, View):
             user = User.objects.get(id=user_id)
             # prevent deleting admins
             if user.role == "admin":
-                return render(request, "error.html", {
-                "message": "Admin accounts cannot be deleted."
+                return render(request, "sucess.html", {
+                "admin_delete_error": "Admin accounts cannot be deleted."
             })
 
             user.delete()
@@ -355,7 +355,7 @@ def register(request):
             name=name, email=email, password=make_password(password), role=role
         )
 
-        return render(request, "register.html", {"success": "Registration successful!"})
+        return redirect("login")
 
     return render(request, "register.html")
 
