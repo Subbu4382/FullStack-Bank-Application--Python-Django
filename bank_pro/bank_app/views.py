@@ -97,7 +97,7 @@ class CreateAccountView(LoginRequiredMixin, CreateView):
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     to=[account.email],
                 )
-                email.send()
+                email.send(fail_silently=True)
                 print("mail sent sucessfully")
         except Exception as e:
             print("EMAIL ERROR:", str(e)) 
